@@ -1,0 +1,22 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+
+#Questo file YAML definisce due servizi: mongodb e mongo-express. Il servizio mongodb utilizza l'immagine di MongoDB ufficiale e mappa la porta 27017 del contenitore all'host locale. La cartella ./data viene montata come volume per mantenere i dati persistenti. Inoltre, viene montato un file mongo-init.js come script di inizializzazione per popolare il database con dati di esempio. Il servizio mongo-express fornisce un'interfaccia web per il database.
