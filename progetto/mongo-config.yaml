@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap   #https://kubernetes.io/docs/concepts/configuration/configmap/
+metadata:
+  name: mongo-config
+data:
+  mongo-url: mongo-service #servizio creato per l'app mongodb
+
+
+#dichiariamo l'end-point per il servizio mongodb config map app/database

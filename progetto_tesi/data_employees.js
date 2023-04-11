@@ -78,5 +78,5 @@
       "matricola": "010",
       "email": "valentina.lombardi@azienda.com",
       "dipartimento": "Marketing"
-    },
+    }
 ]

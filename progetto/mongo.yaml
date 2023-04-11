@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment    #deployments https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+metadata:
+  name: mongo-deployment
+  labels:
+    app: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:     #POD configuration
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo:5.0  #tag https://hub.docker.com/_/mongo/tags?page=3
+        ports:
+        - containerPort: 27017 # configurazione porta ascolto mongo
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME #documentation duckerhub
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret
+              key: mongo-user     # #mongo-secret linea 6
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret #mongo-secret linea 7
+              key: mongo-password  
+---
+apiVersion: v1  #service https://kubernetes.io/docs/concepts/services-networking/service/
+kind: Service
+metadata:
+  name: mongo-service #endpoint nome del service
+spec:
+  selector:
+    app: mongo  #inoltrare la richiesta
+  ports:
+    - protocol: TCP
+      port: 27017 #possibile sostituzione con altra porta ex 8080
+      targetPort: 27017   #necessita stessa porta di deployment linea 21: sove service inoltra la richiesta
+
+

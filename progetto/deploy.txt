@@ -1,0 +1,34 @@
+segui dal terminal i sseguenti comandi
+    kubectl --help #documentation
+    kubectl get --help
+    kubectl describe service "nome del sercizio es. webapp-service"
+
+avvia kind cluster
+    kind create cluster
+
+    kubectl get pod
+non dovrebbe avere nessuana componente
+
+creo configMap e sercret prima del Deployments
+    kubectl apply -f mongo-config.yaml
+    kubectl apply -f mongo-sercret.yaml
+    kubectl apply -f mongo.yaml
+    kubectl apply -f webapp.yaml
+
+    kubectl get all
+    kubectl get configMap
+    kubectl get sercret
+    kubectl get pod
+    kubectl logs "nome pod--> dal comando sopra"
+
+
+    kubectl get svc oppure kubectl get service
+
+posso ora effettuare api da http utilizzando nodeport raggiungendo l'ip di kind
+    kubectl get node
+    kubectl get node -o wide 
+e copia internal ip
+
+
+
+
