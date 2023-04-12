@@ -1,0 +1,20 @@
+# documentazione containerizzazione docker          https://docs.docker.com/get-started/02_our_app/
+
+# immagine base Python 3.11.3
+FROM python:3.11.3
+
+# directory di lavoro nell'interno del contenitore
+WORKDIR /app
+
+# Copia il file progetto
+COPY app.py /app
+
+# Installa le dipendenze 
+RUN pip install flask pymongo 
+RUN pip install virtualenv
+
+# Espone la porta
+EXPOSE 5000
+
+# Avvia l'applicazione quando il contenitore viene eseguito
+CMD ["python", "app.py"]
