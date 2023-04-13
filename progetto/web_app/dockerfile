@@ -4,10 +4,10 @@
 FROM python:3.11.3
 
 # directory di lavoro nell'interno del contenitore
-WORKDIR /app
+WORKDIR /flask_app
 
 # Copia il file progetto nb posso inserire un file requisiti.txt con tutto in necessario 
-COPY app.py /app
+COPY requirements.txt
 
 # Installa le dipendenze 
 RUN pip install flask pymongo 
