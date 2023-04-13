@@ -12,10 +12,10 @@ app = Flask(__name__)
 
 #def GET items 
 @app.route('/api/documents', methods=['GET'])   # poi ricorda sostitutire DOCUMENTS con gli elementi che inserirai tipo macchine,...
-def get_document():
-    documents=[]    #documents è la collezzione document itera
+def get_documens():
+    documents=[]    #documents è la collezzione documenti intera
     for document in collection.find():
-        documents.append({'id':str(document['_id'])}),'data':document['data']
+        documents.append({'data':document['data']})
     return jsonify(documents)
 
 #def  GET specifc-item
@@ -54,6 +54,6 @@ def delete_document(identificativo):
         return jsonify({'error': 'documento non trovato, nessu documento eliminato'})
     
 #avvia Flask
-f __name__ == '__main__':
+if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=3000)  #si avvia l'applicazione Flask con l'host impostato su '0.0.0.0' e la porta impostata su 3000
 
