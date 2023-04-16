@@ -2,15 +2,17 @@ from flask import Flask, request, jsonify   #importa libreria per api
 from pymongo import MongoClient    #importa libreria per mongodb
                                     #doc https://pymongo.readthedocs.io/en/stable/tutorial.html
 
-#connessione database mongo
-client = MongoClient('mongodb://mongo-service:27017')   #controlla porta mongoservice!!!!
-db = client['mydatabase']
-collection = db['mycollection']
-
 #inizializza applicazione flask
 app = Flask(__name__)
 
-#verifico funzionamento su porta 5000********************************DA CANCELLARE
+#connessione database mongo
+#client = MongoClient('mongodb://mongo-service:27017')   #controlla porta mongoservice!!!!
+client = MongoClient("mongodb://localhost:27017/")
+db = client['mydatabase']
+collection = db['mycollection']
+
+
+#verifico funzionamento su porta 5000********************************DA CANCELLARE***********************
 @app.route('/')
 def index():
     return 'App Works!'
@@ -36,7 +38,7 @@ def index_update(id):
 @app.route('/documents/mycollection/<id>', methods=['delete'])
 def index_delete(id):
     return jsonify('Delete works',id)
-#***********************************SEMBRA FUNZIONARE CORRETTAMENTE
+#***********************************SEMBRA FUNZIONARE CORRETTAMENTE*****************************************************
 
 #def GET items 
 @app.route('/api/documents', methods=['GET'])   # poi ricorda sostitutire DOCUMENTS con gli elementi che inserirai tipo macchine,...
