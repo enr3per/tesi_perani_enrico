@@ -10,6 +10,34 @@ collection = db['mycollection']
 #inizializza applicazione flask
 app = Flask(__name__)
 
+#verifico funzionamento su porta 5000********************************DA CANCELLARE
+@app.route('/')
+def index():
+    return 'App Works!'
+
+
+@app.route('/documents/mycollection', methods=['GET'])
+def index_get_all():
+    return 'GET ALL works!'
+
+@app.route('/documents/mycollection/<id>', methods=['GET'])
+def index_get(id):
+    return jsonify('GET works!',id)
+
+@app.route('/documents/mycollection', methods=['POST'])
+def index_post():
+    return 'POST works!'
+
+@app.route('/documents/mycollection/<id>', methods=['PUT'])
+def index_update(id):
+    return jsonify('PUT works!',id)
+   
+
+@app.route('/documents/mycollection/<id>', methods=['delete'])
+def index_delete(id):
+    return jsonify('Delete works',id)
+#***********************************SEMBRA FUNZIONARE CORRETTAMENTE
+
 #def GET items 
 @app.route('/api/documents', methods=['GET'])   # poi ricorda sostitutire DOCUMENTS con gli elementi che inserirai tipo macchine,...
 def get_documens():
@@ -28,7 +56,7 @@ def get_document(identificativo):
         return jsonify({'error':'non è stato trovato alcun prodotto con questo id'})
     
 #def CREATE new item
-@app.route('/api/documents', methods = ['POST'])
+@app.route('/api/documents', methods = ['POST'])    #/api/documentes/<id> convenzione ! da cambiare
 def insert_document():
     data = request.json
     result = collection.insert_one({'data':data})
@@ -55,5 +83,6 @@ def delete_document(identificativo):
     
 #avvia Flask
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=3000)  #si avvia l'applicazione Flask con l'host impostato su '0.0.0.0' e la porta impostata su 3000
+    app.run(debug=True, host='0.0.0.0', port=5000)  #si avvia l'applicazione Flask con l'host impostato su '0.0.0.0' e la porta impostata su 5000
+    #app.run(debug=True, host='0.0.0.0', port=3000)  #si avvia l'applicazione Flask con l'host impostato su '0.0.0.0' e la porta impostata su 3000
 
