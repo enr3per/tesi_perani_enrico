@@ -35,7 +35,7 @@ def index_update(id):
     return jsonify('PUT works!',id)
    
 
-@app.route('/documents/mycollection/<id>', methods=['delete'])
+@app.route('/documents/mycollection/<id>', methods=['DELETE'])
 def index_delete(id):
     return jsonify('Delete works',id)
 #***********************************SEMBRA FUNZIONARE CORRETTAMENTE*****************************************************
