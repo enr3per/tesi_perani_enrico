@@ -7,9 +7,12 @@ app = Flask(__name__)
 
 #connessione database mongo
 #client = MongoClient('mongodb://mongo-service:27017')   #controlla porta mongoservice!!!!
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb://localhost:27017/")  #funziona per test oddia se app.py runna in locale
+#print(client.list_database_names())
 db = client['mydatabase']
+#print (db.list_collection_names)
 collection = db['mycollection']
+#print (collection.list_indexes)
 
 
 #verifico funzionamento su porta 5000********************************DA CANCELLARE***********************
@@ -40,51 +43,72 @@ def index_delete(id):
     return jsonify('Delete works',id)
 #***********************************SEMBRA FUNZIONARE CORRETTAMENTE*****************************************************
 
-#def GET items 
+#def PROVA
+@app.route('/api/documents', methods=['VIEW'])
+def prova():
+    return jsonify("la connessione con il database funziona correttamente")
+
+
+#def GET items --->FUNZIONA
 @app.route('/api/documents', methods=['GET'])   # poi ricorda sostitutire DOCUMENTS con gli elementi che inserirai tipo macchine,...
 def get_documens():
     documents=[]    #documents è la collezzione documenti intera
     for document in collection.find():
-        documents.append({'data':document['data']})
-    return jsonify(documents)
+        documents.append({"nome" : document["nome"],
+                          "cognome":document["cognome"],
+                          "data_nascita":document["data_nascita"],
+                          "id":document["id"],
+                          "email":document["email"],
+                          "dipartimento": document["dipartimento"]})
+              
+    return jsonify(documents= documents)
+    
 
-#def  GET specifc-item
+#def  GET specifc-item  --->FUNZIONA
 @app.route('/api/documents/<id>', methods=['GET'])
-def get_document(identificativo):
-    document= collection.find_one({'_id':identificativo}) #non riconosciuto metodo ObjectId
+def get_one_document(id):
+    documents=[]
+    document = collection.find_one({"id":id}) #non riconosciuto metodo ObjectId
     if document:
-        return jsonify({'id': str(document['_id']), 'data': document['data']})
+        documents.append({"nome" : document["nome"],
+                          "cognome":document["cognome"],
+                          "data_nascita":document["data_nascita"],
+                          "id":document["id"],
+                          "email":document["email"],
+                          "dipartimento": document["dipartimento"]})
+        return jsonify(documents)
     else:
         return jsonify({'error':'non è stato trovato alcun prodotto con questo id'})
     
-#def CREATE new item
+#def CREATE new item    --->FUNZIONA
 @app.route('/api/documents', methods = ['POST'])    #/api/documentes/<id> convenzione ! da cambiare
 def insert_document():
     data = request.json
     result = collection.insert_one({'data':data})
     return jsonify({'id': str(result.inserted_id)})
 
-#def UPDATE item
+#def UPDATE item    ---> FUNZIONA
 @app.route('/api/documents/<id>', methods=['PUT'])
-def update_document(identificativo):
+def update_document(id):
     data = request.json
-    result = collection.update_one({'_id':identificativo}, {'$set': {'data' : data}})  #non riconosciuto metodo ObjectId
+    result = collection.update_one({'id':id}, {'$set': {'data' : data}})  #non riconosciuto metodo ObjectId
     if result.modified_count > 0:
-        return jsonify({'id' : identificativo})
+        return jsonify({'id' : id})
     else:
         return jsonify({'error':'documento non trovato nessuna modifica applicata'})
     
-#def DELETE item
+#def DELETE item --->FUNZIONA
 @app.route('/api/documents/<id>', methods =['DELETE'])
-def delete_document(identificativo):
-    result= collection.delete_one({'_id':identificativo}) 
-    if result.modified_count > 0:
-        return jsonify({'id':identificativo})
+def delete_document(id):
+    result= collection.delete_one({'id':id}) 
+    #if result.modified_count > 0:
+    if result.deleted_count > 0:
+        return jsonify({'id':id})
     else:
         return jsonify({'error': 'documento non trovato, nessu documento eliminato'})
     
 #avvia Flask
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)  #si avvia l'applicazione Flask con l'host impostato su '0.0.0.0' e la porta impostata su 5000
-    #app.run(debug=True, host='0.0.0.0', port=3000)  #si avvia l'applicazione Flask con l'host impostato su '0.0.0.0' e la porta impostata su 3000
+    
 
