@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: apps/v1     # general documentation https://kubernetes.io/blog/2017/01/running-mongodb-on-kubernetes-with-statefulsets/
 kind: Deployment    #deployments https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
 metadata:
   name: mongo-deployment
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mongodb
-        image: mongo:5.0  #tag https://hub.docker.com/_/mongo/tags?page=3
+        image: mongo:6  #ex 5.0  #tag https://hub.docker.com/_/mongo/tags?page=3
         ports:
         - containerPort: 27017 # configurazione porta ascolto mongo
         env:
