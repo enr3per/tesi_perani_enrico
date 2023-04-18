@@ -5,21 +5,22 @@ from pymongo import MongoClient    #importa libreria per mongodb
 #inizializza applicazione flask
 app = Flask(__name__)
 
+print('sembra che tutto funzioni')
 #connessione database mongo
-#client = MongoClient('mongodb://mongo-service:27017')   #controlla porta mongoservice!!!!
+client = MongoClient('mongodb://mongo-service:27017')   #controlla porta mongoservice!!!!
 client = MongoClient("mongodb://localhost:27017/")  #funziona per test oddia se app.py runna in locale
-#print(client.list_database_names())
+
 db = client['mydatabase']
-#print (db.list_collection_names)
+
 collection = db['mycollection']
-#print (collection.list_indexes)
+
 
 
 #verifico funzionamento su porta 5000********************************DA CANCELLARE***********************
 @app.route('/')
 def index():
     return 'App Works!'
-
+    
 
 @app.route('/documents/mycollection', methods=['GET'])
 def index_get_all():
@@ -51,7 +52,7 @@ def prova():
 
 #def GET items --->FUNZIONA
 @app.route('/api/documents', methods=['GET'])   # poi ricorda sostitutire DOCUMENTS con gli elementi che inserirai tipo macchine,...
-def get_documens():
+def get_documents():
     documents=[]    #documents è la collezzione documenti intera
     for document in collection.find():
         documents.append({"nome" : document["nome"],
@@ -60,8 +61,8 @@ def get_documens():
                           "id":document["id"],
                           "email":document["email"],
                           "dipartimento": document["dipartimento"]})
-              
-    return jsonify(documents= documents)
+    documents_sorted= sorted(documents,key=lambda p :p['id'])        
+    return jsonify(documents_sorted= documents_sorted)
     
 
 #def  GET specifc-item  --->FUNZIONA
@@ -107,7 +108,7 @@ def delete_document(id):
     else:
         return jsonify({'error': 'documento non trovato, nessu documento eliminato'})
     
-#avvia Flask
+#avvia Flask    ---> non necessario se containerizzato????
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)  #si avvia l'applicazione Flask con l'host impostato su '0.0.0.0' e la porta impostata su 5000
     
