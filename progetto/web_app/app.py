@@ -8,7 +8,7 @@ app = Flask(__name__)
 print('sembra che tutto funzioni')
 #connessione database mongo
 client = MongoClient('mongodb://mongo-service:27017')   #controlla porta mongoservice!!!!
-client = MongoClient("mongodb://localhost:27017/")  #funziona per test oddia se app.py runna in locale
+#client = MongoClient("mongodb://localhost:27017/")  #funziona per test oddia se app.py runna in locale
 
 db = client['mydatabase']
 

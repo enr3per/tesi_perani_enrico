@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mongodb
-        image: mongo:6  #ex 5.0  #tag https://hub.docker.com/_/mongo/tags?page=3
+        image: mongo:5.0  #ex latest  #tag https://hub.docker.com/_/mongo/tags?page=3
         ports:
         - containerPort: 27017 # configurazione porta ascolto mongo
         env:
@@ -34,7 +34,7 @@ spec:
 apiVersion: v1  #service https://kubernetes.io/docs/concepts/services-networking/service/
 kind: Service
 metadata:
-  name: mongo-service #endpoint nome del service
+  name: mongo-service #endpoint nome del service---> da a configmap protocollo TCP e targetport
 spec:
   selector:
     app: mongo  #inoltrare la richiesta

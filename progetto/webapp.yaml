@@ -16,9 +16,9 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: perrea/web_app_api:latest
+        image: perrea/web_app_api:v1
         ports:
-        - containerPort: 5000 #ex 3000
+        - containerPort: 3000 #ex 5000
         env:
         - name: USER_NAME #da 23 a 27 --> mongo.yaml
           valueFrom:
@@ -46,8 +46,8 @@ spec:
     app: webapp
   ports:
     - protocol: TCP
-      port: 5000  #ex 3000
-      targetPort: 5000  #ex 3000
+      port: 3000  #ex 5000
+      targetPort: 3000  #ex 5000
       nodePort: 30100     #service--> porta statica doc https://kubernetes.io/docs/concepts/services-networking/service/
 
 #range nodePort 30000/32767
