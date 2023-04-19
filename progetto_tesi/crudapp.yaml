@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crudapp
+  labels:
+    app: crudapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crudapp
+  template:
+    metadata:
+      labels:
+        app: crudapp
+    spec:
+      containers:
+        - name: crudapp
+          image: perrea/flask-k8s:1.3
+          ports:
+            - containerPort: 5000
+          imagePullPolicy: Always
