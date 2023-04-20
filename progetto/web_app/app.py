@@ -1,17 +1,15 @@
-from flask import Flask, request, jsonify   #importa libreria per api
-from pymongo import MongoClient    #importa libreria per mongodb
-                                    #doc https://pymongo.readthedocs.io/en/stable/tutorial.html
+from flask import Flask, request, jsonify   
+from pymongo import MongoClient    #ihttps://pymongo.readthedocs.io/en/stable/tutorial.html
+                                  
 
-#inizializza applicazione flask
+#inizializza  flask
 app = Flask(__name__)
 
 print('sembra che tutto funzioni')
 #connessione database mongo
-client = MongoClient('mongodb://mongo-service:27017')   #controlla porta mongoservice!!!!
-#client = MongoClient("mongodb://localhost:27017/")  #funziona per test oddia se app.py runna in locale
-
+#client = MongoClient('mongodb://mongo-service:27017')   #connessione docker
+client = MongoClient("mongodb://localhost:27017/")  #fconnessione locale
 db = client['mydatabase']
-
 collection = db['mycollection']
 
 
@@ -51,9 +49,9 @@ def prova():
 
 
 #def GET items --->FUNZIONA
-@app.route('/api/documents', methods=['GET'])   # poi ricorda sostitutire DOCUMENTS con gli elementi che inserirai tipo macchine,...
+@app.route('/api/documents', methods=['GET'])   
 def get_documents():
-    documents=[]    #documents è la collezzione documenti intera
+    documents=[]    
     for document in collection.find():
         documents.append({"nome" : document["nome"],
                           "cognome":document["cognome"],
@@ -69,7 +67,7 @@ def get_documents():
 @app.route('/api/documents/<id>', methods=['GET'])
 def get_one_document(id):
     documents=[]
-    document = collection.find_one({"id":id}) #non riconosciuto metodo ObjectId
+    document = collection.find_one({"id":id}) 
     if document:
         documents.append({"nome" : document["nome"],
                           "cognome":document["cognome"],
@@ -92,7 +90,7 @@ def insert_document():
 @app.route('/api/documents/<id>', methods=['PUT'])
 def update_document(id):
     data = request.json
-    result = collection.update_one({'id':id}, {'$set': {'data' : data}})  #non riconosciuto metodo ObjectId
+    result = collection.update_one({'id':id}, {'$set': {'data' : data}})  
     if result.modified_count > 0:
         return jsonify({'id' : id})
     else:
@@ -108,8 +106,8 @@ def delete_document(id):
     else:
         return jsonify({'error': 'documento non trovato, nessu documento eliminato'})
     
-#avvia Flask    ---> non necessario se containerizzato????
+#avvia Flask    
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)  #si avvia l'applicazione Flask con l'host impostato su '0.0.0.0' e la porta impostata su 5000
+    app.run(debug=True, host='0.0.0.0', port=5000)  # avvia l'app host impostato su '0.0.0.0' e la porta su 5000
     
 

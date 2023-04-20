@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: perrea/web_app_api:v1
+        image: perrea/src_web_app:v1
         ports:
         - containerPort: 3000 #ex 5000
         env:
