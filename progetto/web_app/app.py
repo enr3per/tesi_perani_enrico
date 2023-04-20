@@ -5,13 +5,11 @@ from pymongo import MongoClient    #ihttps://pymongo.readthedocs.io/en/stable/tu
 #inizializza  flask
 app = Flask(__name__)
 
-print('sembra che tutto funzioni')
 #connessione database mongo
 #client = MongoClient('mongodb://mongo-service:27017')   #connessione docker
 client = MongoClient("mongodb://localhost:27017/")  #fconnessione locale
 db = client['mydatabase']
 collection = db['mycollection']
-
 
 
 #verifico funzionamento su porta 5000********************************DA CANCELLARE***********************
