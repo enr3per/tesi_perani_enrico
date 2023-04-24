@@ -1,17 +1,18 @@
-apiVersion: templates.gatekeeper.sh/v1.0
+apiVersion: templates.gatekeeper.sh/v1
 kind: ConstraintTemplate
 metadata:
-  name: k8s-lables-are-required
+  name: k8srequiredlabels
   annotations:
-    metadata.gatekeeper.sh/title: "Lables are required"
+    metadata.gatekeeper.sh/title: "Required Labels"
     metadata.gatekeeper.sh/version: 1.0.0
     description: >-
-        Si richiede che tutte le risorse contengano label con valori
+      Requires resources to contain specified labels, with values matching
+      provided regular expressions.
 spec:
   crd:
     spec:
       names:
-        kind: k8s-lables-are-required
+        kind: K8sRequiredLabels
       validation:
         openAPIV3Schema:
           type: object
@@ -21,31 +22,34 @@ spec:
             labels:
               type: array
               description: >-
-                Un elenco di labels e valori che devono essere specificate.
+                A list of labels and values the object must specify.
               items:
                 type: object
                 properties:
                   key:
                     type: string
                     description: >-
-                     label richiesta.
+                      The required label.
                   allowedRegex:
                     type: string
                     description: >-
-                      Se specificato, un'espressione regolare il valore dell'annotazione
-                      deve combaciare. Il valore deve contenere almeno una corrispondenza per
-                      l'espressione regolare
+                      If specified, a regular expression the annotation's value
+                      must match. The value must contain at least one match for
+                      the regular expression.
   targets:
     - target: admission.k8s.gatekeeper.sh
       rego: |
         package k8srequiredlabels
+
         get_message(parameters, _default) = msg {
           not parameters.message
           msg := _default
         }
+
         get_message(parameters, _default) = msg {
           msg := parameters.message
         }
+
         violation[{"msg": msg, "details": {"missing_labels": missing}}] {
           provided := {label | input.review.object.metadata.labels[label]}
           required := {label | label := input.parameters.labels[_].key}
@@ -54,6 +58,7 @@ spec:
           def_msg := sprintf("you must provide labels: %v", [missing])
           msg := get_message(input.parameters, def_msg)
         }
+
         violation[{"msg": msg}] {
           value := input.review.object.metadata.labels[key]
           expected := input.parameters.labels[_]
@@ -63,3 +68,4 @@ spec:
           not re_match(expected.allowedRegex, value)
           def_msg := sprintf("Label <%v: %v> does not satisfy allowed regex: %v", [key, value, expected.allowedRegex])
           msg := get_message(input.parameters, def_msg)
+        }
