@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: nginx-privileged
+  name: nginx-privileged-allowed
+spec:
+  containers:
+  - image: perrea/nginx
+    name: nginx
+    securityContext:
+      privileged: false

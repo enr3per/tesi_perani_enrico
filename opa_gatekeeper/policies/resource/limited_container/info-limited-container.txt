@@ -1,0 +1,4 @@
+Questa policy vuole evitare il deployment risorse che superano determinate soglie critiche:
+    --->1 gigabyte di memoria
+    --->200m di utilizzo CPU
+per facilità memoria espressa in byte e utilizzo CPU in ms

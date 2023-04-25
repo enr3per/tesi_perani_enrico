@@ -1,0 +1,1 @@
+Controlla la capacità di qualsiasi container di abilitare la modalità con privilegi.

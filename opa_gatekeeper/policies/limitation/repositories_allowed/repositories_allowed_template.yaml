@@ -6,7 +6,7 @@ metadata:
     metadata.gatekeeper.sh/title: "Allowed Repositories"
     metadata.gatekeeper.sh/version: 1.0.0
     description: >-
-      Requires container images to begin with a string from the specified list.
+      si rchiede che l'immagine del container provenga da una reepository specifica.
 spec:
   crd:
     spec:
@@ -31,19 +31,19 @@ spec:
           container := input.review.object.spec.containers[_]
           satisfied := [good | repo = input.parameters.repos[_] ; good = startswith(container.image, repo)]
           not any(satisfied)
-          msg := sprintf("container <%v> has an invalid image repo <%v>, allowed repos are %v", [container.name, container.image, input.parameters.repos])
+          msg := sprintf("il container <%v> ha un'errata repository <%v>, le reporisories ammesse sono: %v", [container.name, container.image, input.parameters.repos])
         }
 
         violation[{"msg": msg}] {
           container := input.review.object.spec.initContainers[_]
           satisfied := [good | repo = input.parameters.repos[_] ; good = startswith(container.image, repo)]
           not any(satisfied)
-          msg := sprintf("initContainer <%v> has an invalid image repo <%v>, allowed repos are %v", [container.name, container.image, input.parameters.repos])
+          msg := sprintf("initContainer <%v> ha un'errata repository <%v>, le reporisories ammesse sono: %v", [container.name, container.image, input.parameters.repos])
         }
 
         violation[{"msg": msg}] {
           container := input.review.object.spec.ephemeralContainers[_]
           satisfied := [good | repo = input.parameters.repos[_] ; good = startswith(container.image, repo)]
           not any(satisfied)
-          msg := sprintf("ephemeralContainer <%v> has an invalid image repo <%v>, allowed repos are %v", [container.name, container.image, input.parameters.repos])
+          msg := sprintf("ephemeralContainer <%v> ha un'errata repository <%v>, le reporisories ammesse sono: %v", [container.name, container.image, input.parameters.repos])
         }

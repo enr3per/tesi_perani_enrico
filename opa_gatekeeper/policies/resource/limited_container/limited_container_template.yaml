@@ -6,7 +6,7 @@ metadata:
     metadata.gatekeeper.sh/title: "Container Limits"
     metadata.gatekeeper.sh/version: 1.0.0
     description: >-
-      Si richiede che i container abbiano setteti dei limiti di utilizzo CPU e memoria
+      Si richiede che i container abbiano settati dei limiti di utilizzo CPU e memoria
       
 spec:
   crd:

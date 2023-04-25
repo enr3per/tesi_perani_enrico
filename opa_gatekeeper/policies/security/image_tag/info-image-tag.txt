@@ -1,0 +1,1 @@
+questa policy si pone l'obbiettivo di avere solo tag conformi per ciascuna immagine. l'utilizzo del tag 'leatest' non è permesso.
