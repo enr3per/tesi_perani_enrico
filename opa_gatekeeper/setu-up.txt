@@ -1,0 +1,169 @@
+
+	versione gatekeeper rilasciata
+kubectl apply -f https://raw.githubusercontent.com/open-policy-agent/gatekeeper/master/deploy/gatekeeper.yaml
+	oppure
+
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\progetto\opa_gatekeeper\policies
+ 
+kubectl apply -f constraint_template.yaml
+
+E vedi anche queste nuove definizioni di risorse personalizzate (CRD) che sono state create nel cluster:
+kubectl get crd -l gatekeeper.sh/system=yes
+Utilizzando il constrainttemplates.templates.gatekeeper.shCRD è possibile creare definizioni di policy generali che verranno utilizzate da Gatekeeper.
+
+
+	applicare yaml
+kubectl apply -f example-constraint-template.yaml
+
+	verificare creazione risorsa
+kubectl get constrainttemplates
+
+	creare vincolo specifixo in questo caso il vincole è che tutti i namespace devono avere un valore preimpostato per owner label
+
+
+se provo quindi ad applicare il seg yaml da errore:
+	kubectl apply -f test1-opa.yaml
+
+questo invece 
+	kubectl apply -f test2-opa.yaml
+
+	kubectl describe "risorsa"
+esempio --> kubectl describe constraint
+
+	kubectl apply -f no-loadbalancer-templates.yaml
+	kubectl apply -f no-loadbalancer-constraint.yaml 
+
+	kubectl get crd
+	kubectl get loadbalancerconstraint
+	kubectl get loadbalancerconstraint loadbalancerconstraint -o yaml
+
+	kubectl create ns opa-test
+	kubectl apply -f lb-service.yaml
+
+
+passi:
+1---> installa gatekeeper nel cluster
+2--->crea constraint template in REGO
+3--->crea constraint CRD
+4---> crea deploy e test constraint
+5---> osserva l'enforcement
+
+
+kind create cluster
+
+kind create cluster
+
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\policies
+
+kubectl apply -f https://raw.githubusercontent.com/open-policy-agent/gatekeeper/master/deploy/gatekeeper.yaml
+	posso vedere manifesto qui:	https://github.com/open-policy-agent/gatekeeper/blob/master/deploy/gatekeeper.yaml
+
+
+
+			limitation:
+		labels required:
+	template:
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\policies\limitation\labels_required
+
+kubectl apply -f labels_required_template.yaml
+
+	constraint:
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\policies\limitation\labels_required\constraints
+
+kubectl apply -f constrain_owner.yaml
+
+	test:
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\tests\labels_require
+
+kubectl apply -f is-allowed.yaml
+
+kubectl apply -f not-allowed.yaml
+
+
+
+
+		privileges_deprecated:
+	template:	
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\policies\limitation\privileges_deprecated
+
+kubectl apply -f privilege_deprecated_template.yaml
+
+	constraint:
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\policies\limitation\privileges_deprecated\constraint
+
+kubectl apply -f privilege_flag_constraint.yaml
+
+	test:
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\tests\privilege-tag
+
+kubectl apply -f is-allowed.yaml
+
+kubectl apply -f not-allowed-1.yaml
+
+
+
+		repositories_allowed:
+	template:	
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\policies\limitation\repositories_allowed
+
+kubectl apply -f repositories_allowed_template.yaml
+
+	constraint:
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\policies\limitation\repositories_allowed\constraints
+
+kubectl apply -f constrains_myrepository.yaml
+
+	test:
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\tests\repositories_allowed
+
+kubectl apply -f is-allowed.yaml
+
+kubectl apply -f not-allow-miss-repository.yaml
+
+kubectl apply -f not-allowed-wrong-repository.yaml
+
+
+
+		limit of container:
+	template:	
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\policies\resource\limited_container
+
+kubectl apply -f limited_container_template.yaml
+
+	constraint:
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\policies\resource\limited_container\constraints
+
+kubectl apply -f constraint.yaml
+
+	test:
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\tests\limited_container
+
+kubectl apply -f is-allowed.yaml
+
+kubectl apply -f disallowed-cpu.yaml
+
+kubectl apply -f disallowed-memory.yaml
+
+
+
+
+		image_tag:
+	template:	
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\policies\security\image_tag
+
+kubectl apply -f image_tag_template.yaml
+
+	constraint:
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\policies\security\image_tag\constraint
+
+kubectl apply -f image_tag_constraint.yaml
+
+	test:
+cd C:\Users\Enrico\OneDrive\Documenti\GitHub\tesi_perani_enrico\opa_gatekeeper\tests\image-tag
+
+kubectl apply -f is-allowed.yaml
+
+kubectl apply -f not-allawod-tag-leatest.yaml
+
+
+
