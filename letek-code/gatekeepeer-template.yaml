@@ -10,7 +10,7 @@ spec:
       names:
         kind: ClusterRequiredLabels
       validation:
-        # Schema defn for 'parameters' field
+       
         openAPIV3Schema:
           properties:
             labels:
