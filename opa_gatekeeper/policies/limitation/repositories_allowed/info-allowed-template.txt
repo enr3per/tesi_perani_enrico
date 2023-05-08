@@ -1,2 +1,0 @@
-questa policy mira ad impedire a quasiasi container, initContainers o ephemeralContainers di non specificare da quale repository (Docker hub) provengano.
-    --->nella constrain my reposoitory, si specifica che tale prefisso deve errere 'perrea'

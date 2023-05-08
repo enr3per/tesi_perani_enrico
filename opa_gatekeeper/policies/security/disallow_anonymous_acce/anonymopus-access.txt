@@ -1,0 +1,1 @@
+Non consente l'associazione delle risorse ClusterRole e Role a system:anonymous user e system:unauthenticated group.

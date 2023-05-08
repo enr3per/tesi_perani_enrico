@@ -1,0 +1,7 @@
+apiVersion: your.domain.com/v1
+kind: DataBackup
+metadata:
+  name: invalid-backup
+spec:
+  backupFrequency: hourly
+  restoreProcedures: []

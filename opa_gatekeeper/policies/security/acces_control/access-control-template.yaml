@@ -1,0 +1,71 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: rolebinding-access-control
+  annotations:
+    description: "Limita l'accesso alle risorse del cluster solo agli utenti autorizzati"
+spec:
+  crd:
+    spec:
+      names:
+        kind: RoleBinding
+      validation:
+        openAPIV3Schema:
+          properties:
+            subjects:
+              type: array
+              items:
+                properties:
+                  kind:
+                    type: string
+                    enum:
+                      - User
+                      - Group
+                  name:
+                    type: string
+            roleRef:
+              properties:
+                kind:
+                  type: string
+                  enum:
+                    - Role
+                    - ClusterRole
+                name:
+                  type: string
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package rbac-access-control
+
+        deny[msg] {
+          input.review.object.kind == "RoleBinding"
+          input.review.object.spec.roleRef.kind != "Role"
+          input.review.object.spec.roleRef.kind != "ClusterRole"
+          msg := "Il ruolo di riferimento deve essere 'Role' o 'ClusterRole'"
+        }
+
+        deny[msg] {
+          input.review.object.kind == "RoleBinding"
+          subject := input.review.object.spec.subjects[_]
+          subject.kind != "User"
+          subject.kind != "Group"
+          msg := sprintf("Il soggetto deve essere 'User' o 'Group', non '%v'", [subject.kind])
+        }
+
+        deny[msg] {
+          input.review.object.kind == "RoleBinding"
+          subject := input.review.object.spec.subjects[_]
+          subject.kind == "User"
+          userRoles := { roleRef.name | roleRef := data.rbac[user] }
+          not roleRef.name == "admin"
+          msg := sprintf("L'utente '%v' non ha i permessi corretti", [subject.name])
+        }
+
+        deny[msg] {
+          input.review.object.kind == "RoleBinding"
+          subject := input.review.object.spec.subjects[_]
+          subject.kind == "Group"
+          groupRoles := { roleRef.name | roleRef := data.rbac.groups[subject.name] }
+          not roleRef.name == "admin"
+          msg := sprintf("Il gruppo '%v' non ha i permessi corretti", [subject.name])
+        }
