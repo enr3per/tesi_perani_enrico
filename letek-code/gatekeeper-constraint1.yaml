@@ -1,0 +1,12 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: ClusterRequiredLabels
+metadata:
+  name: costcenterlabelrequired
+  annotations:
+    description: "I vincoli necessitano etichette o labels"
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Namespace"]
+  parameters:
+    labels: ["costcenter"]

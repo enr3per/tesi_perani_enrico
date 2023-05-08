@@ -1,0 +1,13 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: ClusterRequiredLabels
+metadata:
+  name: costcenterlabelrequired
+  annotations:
+    description: "Constraint to enforce required labels"
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Namespace"]
+  parameters:
+    labels: ["environment"]
