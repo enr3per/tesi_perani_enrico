@@ -85,9 +85,7 @@ spec:
         # 10 ** 3
         mem_multiple("") = 1000 { true }
 
-        # Kubernetes accepts millibyte precision when it probably shouldn't.
-        # https://github.com/kubernetes/kubernetes/issues/28741
-        # 10 ** 0
+       
         mem_multiple("m") = 1 { true }
 
         # 1000 * 2 ** 10

@@ -1,0 +1,2 @@
+Questa policy mira ad impedire il l'utilizza di risorse che omettono una  specifica dell'etichetta:
+    --->dalla constraint_owner si specifica che tutte le risorse di tipo namespace, devono avere una label di tipo owner, dopodichè si accettano qualsiasi valori.
