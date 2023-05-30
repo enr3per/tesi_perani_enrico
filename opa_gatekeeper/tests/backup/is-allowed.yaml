@@ -1,9 +1,0 @@
-apiVersion: your.domain.com/v1
-kind: DataBackup
-metadata:
-  name: daily-backup
-spec:
-  backupFrequency: daily
-  restoreProcedures:
-    - Procedure 1
-    - Procedure 2
